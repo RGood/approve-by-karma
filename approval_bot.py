@@ -1,11 +1,13 @@
 # oauth PRAW template by /u/The1RGood #
-#==================================================Config stuff====================================================
+#==================================================Imports=========================================================
 import time, praw
 import webbrowser
 from flask import Flask, request
 from threading import Thread
 
+#==================================================Config Params===================================================
 subreddit = 'subreddit_name'
+
 karma_requirement = 1
 
 acceptance_message = 'You have been approved.'
@@ -16,7 +18,6 @@ ignored_users = [
 	'reddit',
 	'automoderator'
 ]
-
 #==================================================End Config======================================================
 #==================================================OAUTH APPROVAL==================================================
 app = Flask(__name__)
