@@ -14,6 +14,8 @@ acceptance_message = 'You have been approved.'
 
 rejection_message = 'You do not have enough karma.'
 
+requires_gold = False
+
 ignored_users = [
 	'reddit',
 	'automoderator'
@@ -89,7 +91,7 @@ while(running):
 			if(m.name not in seen):
 				push_to_seen(m.name)
 				karma = max(m.author.link_karma,m.author.comment_karma)
-				if(karma >= karma_requirement and m.author.name not in names):
+				if(karma >= karma_requirement and m.author.name not in names and (not requires_gold or m.is_gold)):
 					cc.add_contributor(m.author.name)
 					m.reply(acceptance_message)
 					names+=[m.author.name]
