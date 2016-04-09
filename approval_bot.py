@@ -5,7 +5,7 @@ import webbrowser
 from flask import Flask, request
 from threading import Thread
 
-#==================================================Config Params===================================================
+#============================================Basic Config Params===================================================
 subreddit = 'subreddit_name'
 
 karma_requirement = 1
@@ -20,16 +20,23 @@ ignored_users = [
 	'reddit',
 	'automoderator'
 ]
-#==================================================End Config======================================================
-#==================================================OAUTH APPROVAL==================================================
-app = Flask(__name__)
 
 CLIENT_ID = '' #SET THIS TO THE ID UNDER PREFERENCES/APPS
 CLIENT_SECRET = '' #SET THIS TO THE SECRET UNDER PREFERENCES/APPS
-scope = 'identity read modcontributors privatemessages' #SET THIS. SEE http://praw.readthedocs.org/en/latest/pages/oauth.html#oauth-scopes FOR DETAILS.
+scope = 'identity read modcontributors privatemessages' #SET THIS.
+#SEE http://praw.readthedocs.org/en/latest/pages/oauth.html#oauth-scopes FOR DETAILS ON SCOPE.
 #These permissions should be enough, though.
+#=============================================Advanced Config Params===============================================
 
+#This is the address of the bot host.
 REDIRECT_URI = 'http://127.0.0.1:65010/authorize_callback'
+
+#If you only have command-line access to the host, set this to false.
+open_access_page = True
+#==================================================End Config======================================================
+
+#==================================================OAUTH APPROVAL==================================================
+app = Flask(__name__)
 
 #Kill function, to stop server once auth is granted
 def kill():
@@ -55,7 +62,13 @@ r = praw.Reddit('OAuth FLASK Template Script'
                 'https://praw.readthedocs.org/en/latest/'
                 'pages/oauth.html for more info.')
 r.set_oauth_app_info(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
-webbrowser.open(r.get_authorize_url('DifferentUniqueKey',scope,True))
+
+if(open_access_page):
+	webbrowser.open(r.get_authorize_url('DifferentUniqueKey',scope,True))
+else:
+	print("Follow this address to grant access: ")
+	print(r.get_authorize_url('DifferentUniqueKey',scope,True))
+
 app.run(debug=False, port=65010)
 #==================================================END OAUTH APPROVAL-=============================================
 
